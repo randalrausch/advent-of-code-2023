@@ -2,7 +2,7 @@
 
 Ho ho ho, welcome to my humble repository of Advent of Code ... 'solutions'. 🌟 As [Prince](https://en.wikipedia.org/wiki/Prince_(musician)) would say, "If you're here expecting pristine code and flawless solutions, you're in the wrong house."
 
-**What's Advent of Code, you ask?** Well, it's an annual coding challenge that combines the joy of the holiday season with the agony of debugging bad code. 🎅👾 Read more [here]([https://adventofcode.com](https://adventofcode.com/about))
+**What's Advent of Code, you ask?** Well, it's an annual coding challenge that combines the joy of the holiday season with the agony of debugging bad code. 🎅👾 Read more [here](https://adventofcode.com/about)
 
 I've been a manager for too long and fear my software engineering skills are atrophying.  That bothers me.  Also, I really enjoy coding.
 
