@@ -27,4 +27,4 @@ if __name__ == "__main__":
                 print(f"The two digit number is: {two_digit_integer}")        
                 print(f"The running sum is: {sum_of_calibrations}\n")        
         
-    print(f"The sum of all calibrations values is: {sum_of_calibrations}.")
+    print(f"The sum of all calibration values is: {sum_of_calibrations}.")
