@@ -17,6 +17,7 @@ import re
 # Setup
 input_file = "./input2.txt"
 sum_of_gameIDs = 0
+sum_of_game_powers = 0
 
 # Define a dictionary to store the cube color maximums
 color_thresholds = {'green': 13, 'red': 12, 'blue': 14}
@@ -39,16 +40,25 @@ if __name__ == "__main__":
                 # Find all cube-color pairs in bit after Game ID
                 color_matches = re.findall(color_pattern, rest_of_line)
 
-                 # Iterate through the cube-color pairs and check if any exceed threshold
+                # Iterate through the cube-color pairs and check if any exceed threshold
                 valid_game = True
+                game_max_cubes = {'green': 0, 'red': 0, 'blue': 0}
+                game_power=1 # identity value for multiplication
                 for cubes, color in color_matches:
-                    if int(cubes) > color_thresholds[color]:
+                    cubes = int(cubes)
+                    if color in game_max_cubes and cubes > game_max_cubes[color]:
+                        game_max_cubes[color] = cubes
+            
+                for color, max_cubes in game_max_cubes.items():
+                    game_power *= max_cubes
+                    if max_cubes > color_thresholds[color]:
                         valid_game = False
-                        break
                 if valid_game:
                     sum_of_gameIDs += game_id
+                sum_of_game_powers += game_power
             else:
                 # Imagine input error handling here
                 print("Invalid Syntax for Game ID.")
 
     print(f"Sum of possible game IDs = {sum_of_gameIDs}")
+    print(f"Sum of game powers = {sum_of_game_powers}")
