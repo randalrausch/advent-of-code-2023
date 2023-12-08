@@ -16,13 +16,12 @@ import re
 
 # Setup
 input_file = "./input2.txt"
-debug_mode = False 
 sum_of_gameIDs = 0
 
 # Define a dictionary to store the cube color maximums
 color_thresholds = {'green': 13, 'red': 12, 'blue': 14}
 
-# Regular expression pattern to extract the "Game #:" part and the value-color pairs part
+# Regular expression pattern to extract the "Game #:" part and split rest of line
 game_pattern = r'Game (\d+): (.*)'
 # Regular expression pattern to find numbers followed by labels
 color_pattern = r'(\d+) (\w+)'
@@ -31,22 +30,19 @@ if __name__ == "__main__":
     # Read Input File
     with open(input_file, 'r') as file:
         for line in file:                
-            # Find the game ID and value-color pairs
+            # Find the game ID and cube-color pairs
             game_matches = re.search(game_pattern, line)
             if game_matches:
                 game_id = int(game_matches.group(1))
                 rest_of_line = game_matches.group(2)
 
-                # Find all label-count pairs in bit after Game ID
+                # Find all cube-color pairs in bit after Game ID
                 color_matches = re.findall(color_pattern, rest_of_line)
 
-                 # Iterate through the cube color pairs and check if any exceed threshold
+                 # Iterate through the cube-color pairs and check if any exceed threshold
                 valid_game = True
                 for cubes, color in color_matches:
                     if int(cubes) > color_thresholds[color]:
-                        if debug_mode:
-                            print(f"Game #{game_id} is impossible.")
-                            print(f"{line}")
                         valid_game = False
                         break
                 if valid_game:
