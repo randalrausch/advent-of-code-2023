@@ -40,9 +40,8 @@ if __name__ == "__main__":
                 # Find all label-count pairs in bit after Game ID
                 color_matches = re.findall(color_pattern, rest_of_line)
 
-                valid_game = True
-
                  # Iterate through the cube color pairs and check if any exceed threshold
+                valid_game = True
                 for cubes, color in color_matches:
                     if int(cubes) > color_thresholds[color]:
                         if debug_mode:
