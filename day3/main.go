@@ -30,7 +30,10 @@ func findNumbersAndLocations(lines []string) []Number {
 	for lineNumber, line := range lines {
 		matches := re.FindAllStringIndex(line, -1)
 		for _, match := range matches {
-			actualNumber, _ := strconv.Atoi(line[match[0]:match[1]])
+			actualNumber, err := strconv.Atoi(line[match[0]:match[1]])
+			if err != nil {
+				panic(err)
+			}
 			loc := Location{lineNumber, match[0], match[1] - 1}
 			num := Number{actualNumber, loc}
 			numbers = append(numbers, num)
@@ -40,27 +43,42 @@ func findNumbersAndLocations(lines []string) []Number {
 }
 
 // For each Number, check surrounding characters, including diagonals. If any surrounding char is a "symbol" add number to list of part numbers.
-func identifyPartNumbers(numbers []Number, lines []string, numLines int, maxLineLength int) []int {
+// A gear is any * symbol that is adjacent to exactly two part numbers
+func identifyGearsAndPartNumbers(numbers []Number, lines []string, numLines int, maxLineLength int) ([]int, []int) {
 	var partNumbers []int
-NumberLoop:
+	potentialGears := make(map[[2]int][]int)
+	var gearRatios []int
+
 	for _, number := range numbers {
-		//Bound search to line above and line below current number
-		for row := number.Location.LineNumber - 1; row < number.Location.LineNumber+2; row++ {
+		isPartNumber := false
+		// Bound search to line above and line below current number
+		for row := number.Location.LineNumber - 1; row <= number.Location.LineNumber+1; row++ {
 			if row >= 0 && row < numLines {
 				// Bound Search to character to left and right of number
-				for column := number.Location.StartIndex - 1; column < number.Location.EndIndex+2; column++ {
+				for column := number.Location.StartIndex - 1; column <= number.Location.EndIndex+1; column++ {
 					if column >= 0 && column < maxLineLength {
-						// Check if it is a symbol (not a digit or '.')
-						if !(unicode.IsDigit(rune(lines[row][column])) || lines[row][column] == '.') {
-							partNumbers = append(partNumbers, number.Number)
-							continue NumberLoop // Only add a part number once
+						// Check if it is a symbol (not a digit or '.'), indicating the number in question is a partNumber
+						charachter := lines[row][column]
+						if !(unicode.IsDigit(rune(charachter)) || charachter == '.') {
+							isPartNumber = true
+							if charachter == '*' {
+								potentialGears[[2]int{row, column}] = append(potentialGears[[2]int{row, column}], number.Number)
+							}
 						}
 					}
 				}
 			}
 		}
+		if isPartNumber {
+			partNumbers = append(partNumbers, number.Number)
+		}
 	}
-	return partNumbers
+	for _, parts := range potentialGears {
+		if len(parts) == 2 {
+			gearRatios = append(gearRatios, parts[0]*parts[1])
+		}
+	}
+	return gearRatios, partNumbers
 }
 
 // Read input file and store height and width of input.
@@ -95,7 +113,7 @@ func main() {
 
 	lines, numLines, maxLineLength := readInput(inputFile)
 	numLocs := findNumbersAndLocations(lines)
-	partNums := identifyPartNumbers(numLocs, lines, numLines, maxLineLength)
+	gearRatios, partNums := identifyGearsAndPartNumbers(numLocs, lines, numLines, maxLineLength)
 	fmt.Println(sumInts(partNums))
-
+	fmt.Println(sumInts(gearRatios))
 }
