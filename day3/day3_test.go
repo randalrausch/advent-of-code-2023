@@ -11,9 +11,9 @@ func TestDay3Part1(t *testing.T) {
 	expected := 4361
 
 	// Call your module/package function
-	lines, numLines, maxLineLength := readInput(inputFile)
-	numLocs := findNumbersAndLocations(lines)
-	_, partNums := identifyGearsAndPartNumbers(numLocs, lines, numLines, maxLineLength)
+	lines, _ := readInput(inputFile)
+	numLocs, _ := findNumbersAndLocations(lines)
+	_, partNums := findGearRatiosAndPartNumbers(numLocs, lines)
 	result := sumInts(partNums)
 
 	// Check if the result matches the expected output
@@ -29,9 +29,9 @@ func TestDay3Part2(t *testing.T) {
 	expected := 467835
 
 	// Call your module/package function
-	lines, numLines, maxLineLength := readInput(inputFile)
-	numLocs := findNumbersAndLocations(lines)
-	gearRatios, _ := identifyGearsAndPartNumbers(numLocs, lines, numLines, maxLineLength)
+	lines, _ := readInput(inputFile)
+	numLocs, _ := findNumbersAndLocations(lines)
+	gearRatios, _ := findGearRatiosAndPartNumbers(numLocs, lines)
 	result := sumInts(gearRatios)
 
 	// Check if the result matches the expected output
