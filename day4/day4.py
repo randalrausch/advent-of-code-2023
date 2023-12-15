@@ -17,26 +17,22 @@ if __name__ == "__main__":
             card_value = 0
             # Parse each line into 3 parts. (card_label, winning_numbers, scratch_numbers)
             parts = re.split(r'[:|]', line, maxsplit=2)
-            winning_numbers = set(re.findall(r'\d+', parts[1]))
-            scratch_numbers = set(re.findall(r'\d+', parts[2]))
-    
-            match_count = sum(1 for number in winning_numbers if number in scratch_numbers)
+            winning_numbers = [int(x) for x in parts[1].split()]
+            scratch_numbers = [int(x) for x in parts[2].split()]
+            match_count = len(set(winning_numbers) & set(scratch_numbers))            
 
             # Calculate points
             if match_count > 0:
                 card_value = 2 ** (match_count-1)
-            total_points += card_value
-            
-            # For each card of this label (index), process how ever many copies we have (including the original)
-            for i in range(card_instances[index]):
-                # Processing winnings (create card copies)
-                for j in range(match_count):
-                        card_instances[index+j+1] += 1
-                        # Note: Defaultdict behavior prevents indexing out of range errors. 
-                        # Also, this will create copies of non-existant cards beyond the end of the file,
-                        # but they won't be summed as the next statement stops adding on the last line of the input file.
-            total_cards += card_instances[index]
+                total_points += card_value
 
+            # Processing winnings (create card copies)
+            for j in range(match_count):
+                card_instances[index+j+1] += card_instances[index]
+                # Note: Defaultdict behavior prevents indexing out of range errors. 
+                # Also, this will create copies of non-existant cards beyond the end of the file,
+                # but they won't be summed as the next statement stops adding on the last line of the input file.
+            total_cards += card_instances[index]
 
 print("The total number of points is: ", total_points)
 print("The total number of cards is: ", total_cards)
