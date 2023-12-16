@@ -1,4 +1,4 @@
-# 🎄 Advent of Code 2023 Attempted Solutions
+# 🎄 Advent of Code - My Attempted Solutions
 
 Ho ho ho, welcome to my humble repository of Advent of Code ... 'solutions'. As [Prince](https://en.wikipedia.org/wiki/Prince_(musician)) would say, "If you're here expecting pristine code and flawless solutions, you're in the wrong house."
 
