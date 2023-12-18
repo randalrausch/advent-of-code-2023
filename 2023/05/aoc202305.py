@@ -37,6 +37,17 @@ def process_seed(seed, maps):
     return result
 
 
+def expand_seed_list(old_syntax_seeds):
+    # Slice the list and parse the pairs
+    seed_pairs = [old_syntax_seeds[i:i + 2]
+                  for i in range(0, len(old_syntax_seeds), 2)]
+    # Expand the list based on pair syntax
+    seeds = [seed for pair in seed_pairs for seed in range(
+        pair[0], pair[0]+pair[1])]
+
+    return seeds
+
+
 def part1(data):
     """Solve part 1."""
     seeds, maps = data
@@ -48,7 +59,15 @@ def part1(data):
 
 def part2(data):
     """Solve part 2."""
-    return 42
+    old_syntax_seeds, maps = data
+    # expand seed list based on new range information
+    seeds = expand_seed_list(old_syntax_seeds)
+
+    # Brute force through this much longer list.
+    locations = []
+    for seed in seeds:
+        locations.append(process_seed(seed, maps))
+    return (min(locations))
 
 
 def solve(puzzle_input):
